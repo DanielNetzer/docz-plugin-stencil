@@ -1,165 +1,141 @@
-import { createPlugin } from 'docz-core'
-import MiniCssExtractPlugin from 'mini-css-extract-plugin'
-import OptimizeCSSAssetsPlugin from 'optimize-css-assets-webpack-plugin'
-import merge from 'deepmerge'
+import { createPlugin } from "docz-core";
+import * as fs from "fs";
+import * as path from "path";
 
-import { getLocalIdent } from './get-local-ident'
+const OUTPUT_PATH = "docs-copy";
 
-/**
- * Tests
- */
+function fromDir(
+  startPath: string,
+  filter: RegExp,
+  callback: (filename: string) => void
+) {
+  if (!fs.existsSync(startPath)) {
+    console.log("no dir ", startPath);
+    return;
+  }
 
-type PreProcessor = 'postcss' | 'sass' | 'less' | 'stylus'
-const tests: Record<PreProcessor, RegExp> = {
-  postcss: /(\.module)?\.css$/,
-  sass: /(\.module)?\.s(a|c)ss$/,
-  less: /(\.module)?\.less$/,
-  stylus: /(\.module)?\.styl(us)?$/,
-}
+  var files = fs.readdirSync(startPath);
+  for (var i = 0; i < files.length; i++) {
+    var filename = path.join(startPath, files[i]);
+    var stat = fs.lstatSync(filename);
 
-/**
- * Loaders
- */
-
-export interface Opts {
-  [key: string]: any
-}
-
-const getStyleLoaders = (loader: any, opts: Opts) => (
-  cssopts: any,
-  dev: boolean
-) => {
-  return [
-    {
-      loader: dev
-        ? require.resolve('style-loader')
-        : MiniCssExtractPlugin.loader,
-    },
-    {
-      loader: require.resolve('css-loader'),
-      options: cssopts,
-    },
-    {
-      loader,
-      options: opts,
-    },
-  ]
-}
-
-const loaders = {
-  postcss: (opts: Opts = { plugins: [] }) =>
-    getStyleLoaders(
-      require.resolve('postcss-loader'),
-      merge(opts, {
-        plugins: () => {
-          const defaultPlugins = [
-            require('postcss-flexbugs-fixes'),
-            require('autoprefixer')({
-              flexbox: 'no-2009',
-            }),
-          ]
-
-          return opts && opts.plugins && Array.isArray(opts.plugins)
-            ? opts.plugins.concat(defaultPlugins)
-            : defaultPlugins
-        },
-      })
-    ),
-
-  sass: (opts: Opts = {}) =>
-    getStyleLoaders(
-      require.resolve('sass-loader'),
-      merge(opts, { indentedSyntax: false })
-    ),
-
-  less: (opts: Opts = {}) =>
-    getStyleLoaders(require.resolve('less-loader'), opts),
-
-  stylus: (opts: Opts = {}) =>
-    getStyleLoaders(
-      require.resolve('stylus-loader'),
-      merge(opts, { preferPathResolver: 'webpack' })
-    ),
-}
-
-/**
- * Rules
- */
-
-const applyRule = (
-  opts: CSSPluginOptions,
-  cssmodules: boolean | undefined, // if cssmodules === undefined, then let webpack decide whether to use CSS modules by itself
-  dev: boolean
-) => {
-  const { preprocessor, cssOpts, loaderOpts, ruleOpts } = opts
-
-  const loaderfn = loaders[preprocessor as PreProcessor]
-  const loader = loaderfn(loaderOpts)
-  const cssoptions = merge(
-    cssOpts,
-    {
-      importLoaders: 1,
-      sourceMap: !dev,
-      ...(cssmodules && { getLocalIdent }),
-    },
-    typeof cssmodules === 'boolean' ? { modules: cssmodules } : {}
-  )
-
-  return {
-    test: tests[preprocessor as PreProcessor],
-    use: loader(cssoptions, dev),
-    ...ruleOpts,
+    if (stat.isDirectory()) {
+      fromDir(filename, filter, callback); //recurse
+    } else if (filter.test(filename)) callback(filename);
   }
 }
 
-export interface CSSPluginOptions {
-  preprocessor?: 'postcss' | 'sass' | 'less' | 'stylus'
-  cssmodules?: boolean
-  loaderOpts?: Opts
-  cssOpts?: Opts
-  ruleOpts?: Opts
+function getComponentsModules(startPath: string): string[] | undefined {
+  if (!fs.existsSync(startPath)) {
+    console.error(`Directory ${startPath} doesn't exist!`);
+    return;
+  }
+
+  const componentPaths = fs
+    .readdirSync(startPath)
+    .map(f => path.join(startPath, f));
+  return componentPaths;
 }
 
-const defaultOpts: Record<string, any> = {
-  preprocessor: 'postcss',
-  cssmodules: undefined,
-  loadersOpts: {},
-  cssOpts: {},
-  ruleOpts: {},
+export interface DoczStencilPluginOptions {
+  outputPath: string;
 }
 
-export const css = (opts: CSSPluginOptions = defaultOpts) =>
-  createPlugin({
-    modifyBundlerConfig: (config, dev) => {
-      config.module.rules.push(applyRule(opts, opts.cssmodules, dev))
+export const stencil = (opts?: DoczStencilPluginOptions) => {
+  const outputPath = opts.outputPath ? opts.outputPath : OUTPUT_PATH;
+  return createPlugin({
+    // modifyBundlerConfig: (config, dev, args) => {
+    //   console.log("modifyBundlerConfig");
+    //   return config;
+    // },
+    // modifyBabelRc: (babelrc, args) => {
+    //   console.log("modifyBabelRc");
+    //   return babelrc;
+    // },
+    // onServerListening: server => {
+    //   console.log("onServerListening");
+    // },
+    // onPreBuild: () => {
+    //   console.log("onPreBuild");
+    // },
 
-      if (!dev) {
-        const test = tests[opts.preprocessor || ('postcss' as PreProcessor)]
-        const minimizer = config.optimization.minimizer || []
-        const splitChunks = { ...config.optimization.splitChunks }
+    // onPostBuild: args => {
+    //   console.log("onPostBuild");
+    // },
+    // onPostRender: () => {
+    //   console.log("onPostRender");
+    // },
+    // onPreRender: () => {
+    //   console.log("onPreRender");
+    // },
+    // onCreateApp: app => {
+    //   console.log("onCreateApp");
+    // },
+    modifyFiles: files => {
+      console.log("modifyFiles");
+      const componentsModules = getComponentsModules("src/components");
+      componentsModules.forEach(cmpMdlPath => {
+        let cmpName = cmpMdlPath.split("\\").pop();
+        let mdContent: string[] = [];
+        let playgroundContent: string[] = [];
+        fromDir(cmpMdlPath, /\.md$/, filenameWithPath => {
+          let filename = filenameWithPath
+            .split("\\")
+            .pop()
+            .split(".")[0];
 
-        config.optimization.minimizer = minimizer.concat([
-          new OptimizeCSSAssetsPlugin({}),
-        ])
+          if (filename === "playground") {
+            playgroundContent = fs
+              .readFileSync(filenameWithPath, { encoding: "utf8" })
+              .split("\n");
+            return;
+          }
 
-        config.optimization.splitChunks = merge(splitChunks, {
-          cacheGroups: {
-            styles: {
-              test: (m: any) => test.test(m.type),
-              name: 'styles',
-              chunks: 'all',
-              enforce: true,
-            },
-          },
-        })
+          if (filename === "readme") {
+            mdContent = fs
+              .readFileSync(filenameWithPath, { encoding: "utf8" })
+              .split("\n");
+            return;
+          }
+        });
 
-        config.plugins.push(
-          new MiniCssExtractPlugin({
-            filename: 'static/css/[name].[hash].css',
-          })
-        )
-      }
+        const doczMdHeader = ["", "---", `name: ${cmpName}`, "---", ""];
+        const doczPGContent = [
+          "",
+          "import { Playground } from 'docz';",
+          "import { defineCustomElements } from './loader';",
+          "defineCustomElements(window);",
+          "",
+          "<Playground>",
+          ...playgroundContent,
+          "</Playground>",
+          ""
+        ];
 
-      return config
+        mdContent.unshift(...doczMdHeader);
+
+        // remove playground title
+        const playGrndInsertionIndex = mdContent.findIndex(ctntLine =>
+          ctntLine.includes("Auto Generated Below")
+        );
+
+        // insert the playground content
+        mdContent.splice(playGrndInsertionIndex + 1, 0, ...doczPGContent);
+
+        const doczMdxContent = mdContent.join("\n");
+
+        // create new file with playground content, name it after the component name
+        fs.writeFileSync(`${outputPath}/${cmpName}.mdx`, doczMdxContent);
+      });
+      return files;
     },
-  })
+    setConfig: config => {
+      console.log("setConfig");
+      config.files = '**/*.mdx';
+      config.codeSandbox = false;
+      config.typescript = true;
+      config.propsParser = false;
+      return config;
+    }
+  });
+};
