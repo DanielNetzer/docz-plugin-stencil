@@ -1,0 +1,1 @@
+export * from '../../dist/esm/es5/mycomponent.define.js';

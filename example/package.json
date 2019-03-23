@@ -1,0 +1,32 @@
+{
+  "name": "docz-plugin-stencil",
+  "version": "0.0.1",
+  "description": "Stencil Component Starter",
+  "module": "dist/esm/index.js",
+  "main": "dist/index.js",
+  "unpkg": "dist/ionic.js",
+  "types": "dist/types/components.d.ts",
+  "collection": "dist/collection/collection-manifest.json",
+  "files": [
+    "dist/"
+  ],
+  "scripts": {
+    "docz:dev": "wait-on http://localhost:3333/ && docz dev",
+    "docz:build": "docz build",
+    "stencil:dev": "stencil build --watch --serve --docs",
+    "stencil:build": "stencil build --docs",
+    "build": "npm run stencil:build && npm run docz:build",
+    "start": "concurrently \"npm run stencil:dev\" \"npm run docz:dev\"",
+    "test": "stencil test --spec --e2e",
+    "test.watch": "stencil test --spec --e2e --watchAll"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@stencil/core": "~0.16.2",
+    "docz": "^1.0.0-rc.3",
+    "docz-theme-default": "^1.0.0-rc.3",
+    "concurrently": "^4.1.0",
+    "wait-on": "^3.2.0"
+  },
+  "license": "MIT"
+}
