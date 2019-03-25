@@ -1,5 +1,5 @@
 # docz-plugin-stencil
-
+[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 Docz plugin to integrate easily with [stenciljs](https://stenciljs.com)
 
 [Example](https://github.com/danielnetzer/docz-plugin-stencil/tree/master/example)
