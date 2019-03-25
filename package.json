@@ -21,6 +21,7 @@
     "dev": "rollup -cw",
     "build": "rollup -c",
     "fix": "run-s fix:*",
+    "test": "",
     "fix:prettier": "prettier \"src/**/*.{ts,tsx}\" --write",
     "fix:tslint": "tslint --fix --project .",
     "tslint": "tslint --project .",
