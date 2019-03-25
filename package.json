@@ -3,6 +3,10 @@
   "version": "0.1.0",
   "description": "Integrates Stencil auto generated markdown files into Docz with ease",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DanielNetzer/docz-plugin-stencil.git"
+  },
   "main": "dist/index.js",
   "module": "dist/index.es.js",
   "typings": "dist/index.d.ts",
@@ -10,6 +14,7 @@
   "files": [
     "dist/",
     "package.json",
+    "CHANGELOG.MD",
     "README.md"
   ],
   "scripts": {
@@ -18,11 +23,31 @@
     "fix": "run-s fix:*",
     "fix:prettier": "prettier \"src/**/*.{ts,tsx}\" --write",
     "fix:tslint": "tslint --fix --project .",
-    "tslint": "tslint --project ."
+    "tslint": "tslint --project .",
+    "commit": "git-cz"
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   },
   "devDependencies": {
     "@types/node": "^11.11.6",
+    "commitizen": "^3.0.7",
+    "cz-conventional-changelog": "^2.1.0",
     "docz-core": "^1.0.0-rc.3",
+    "husky": "^1.3.1",
     "lint-staged": "^8.1.5",
     "npm-run-all": "^4.1.5",
     "prettier": "^1.16.4",

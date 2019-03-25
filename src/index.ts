@@ -51,28 +51,14 @@ export const stencil = (opts?: DoczStencilPluginOptions) => {
     modifyFiles: files => {
       const componentsModules = getComponentsModules('src/components')
       componentsModules.forEach(cmpMdlPath => {
-        const cmpName = cmpMdlPath.split('\\').pop()
+        const cmpName = path.parse(cmpMdlPath).name
         let mdContent: string[] = []
         let playgroundContent: string[] = []
 
         fromDir(cmpMdlPath, /\.md$/, (filenameWithPath, err) => {
           if (err) throw new Error(err)
 
-          const filePath = filenameWithPath.split('\\')
-          let fileWIthExtension: string
-          let filename: string
-
-          if (filePath) {
-            fileWIthExtension = filePath.pop() as string
-          } else {
-            return
-          }
-
-          if (fileWIthExtension) {
-            filename = fileWIthExtension.split('.')[0]
-          } else {
-            return
-          }
+          const filename = path.parse(filenameWithPath).base
 
           if (filename === 'playground') {
             playgroundContent = fs
