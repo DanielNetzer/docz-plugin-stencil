@@ -6,19 +6,16 @@ Docz plugin to integrate easily with [stenciljs](https://stenciljs.com)
 
 ## Installation
 
- 1. install the plugin:
+ 1. install the plugin and dev dependencies:
 
 ```bash
-$ yarn add docz-plugin-stencil --dev
+// using yarn
+$ yarn add docz-plugin-stencil wait-on concurrently --dev
+// using npm
+$ npm i -D docz-plugin-stencil wait-on concurrently
 ```
 
-2. instal required dev packages
-
-```base
-$ yarn add wait-on concurrently --dev
-```
-
-3. add the plugin on your `doczrc.js`:
+2. add the plugin on your `doczrc.js`:
 
 ```js
 // doczrc.js
@@ -31,7 +28,7 @@ export default {
 }
 ```
 
-4. modify `package.json` scripts to run docz in parallel with stencil
+3. modify `package.json` scripts to run docz in parallel with stencil
 
 ```json
 "scripts": {
@@ -58,13 +55,10 @@ export default {
     ]
 ```
 
-
-
 ## Api
 ### Playground files
 
 each component that will have a `playground.md` file in his root directory, the plugin will auto generate a `docz` playground section accordingly.
-
 
 ### Params
 -- no params are allowed at the moment besides `outputPath` but it's preffered not to change it, if you do want to change that outputPath from `docs` then don't forget to update your `stencil.config.js` in the `esmLoaderPath: "../<outputPath>/loader"`.
