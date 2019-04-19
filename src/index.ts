@@ -1,6 +1,6 @@
 import { createPlugin } from 'docz-core'
-import * as fs from 'fs'
-import * as path from 'path'
+import fs from 'fs'
+import path from 'path'
 
 const OUTPUT_PATH = 'docs'
 
@@ -60,14 +60,16 @@ export const stencil = (opts?: DoczStencilPluginOptions) => {
 
           const filename = path.parse(filenameWithPath).base
 
-          if (filename === 'playground') {
+          console.log(filename)
+
+          if (filename === 'playground.md') {
             playgroundContent = fs
               .readFileSync(filenameWithPath, { encoding: 'utf8' })
               .split('\n')
             return
           }
 
-          if (filename === 'readme') {
+          if (filename === 'readme.md') {
             mdContent = fs
               .readFileSync(filenameWithPath, { encoding: 'utf8' })
               .split('\n')
@@ -110,7 +112,7 @@ export const stencil = (opts?: DoczStencilPluginOptions) => {
       return files
     },
     setConfig: config => {
-      config.files = '**/*.mdx'
+      config.files = '**/*.{mdx, md}'
       config.codeSandbox = false
       config.typescript = true
       config.propsParser = false

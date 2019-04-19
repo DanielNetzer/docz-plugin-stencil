@@ -9,10 +9,7 @@ Docz plugin to integrate easily with [stenciljs](https://stenciljs.com)
  1. install the plugin and dev dependencies:
 
 ```bash
-// using yarn
 $ yarn add docz-plugin-stencil wait-on concurrently --dev
-// using npm
-$ npm i -D docz-plugin-stencil wait-on concurrently
 ```
 
 2. add the plugin on your `doczrc.js`:

@@ -22,9 +22,9 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "@stencil/core": "~0.16.2",
-    "docz": "^1.0.0-rc.3",
-    "docz-theme-default": "^1.0.0-rc.3",
+    "@stencil/core": "^0.18.1",
+    "docz": "^1.0.4",
+    "docz-theme-default": "^1.0.4",
     "concurrently": "^4.1.0",
     "wait-on": "^3.2.0"
   },
