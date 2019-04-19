@@ -1,6 +1,6 @@
 {
   "name": "docz-plugin-stencil",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "description": "Integrates Stencil auto generated markdown files into Docz with ease",
   "license": "MIT",
   "repository": {
@@ -26,7 +26,7 @@
     "fix:tslint": "tslint --fix --project .",
     "tslint": "tslint --project .",
     "commit": "git-cz",
-    "release": "rollup -c && standard-version && git push --follow-tags origin master"
+    "release": "npm run build && standard-version && git push --follow-tags origin master"
   },
   "config": {
     "commitizen": {
@@ -44,20 +44,23 @@
       "pre-commit": "lint-staged"
     }
   },
+  "peerDependencies": {
+    "docz-core": "^1.0.4"
+  },
   "devDependencies": {
-    "@types/node": "^11.11.6",
-    "commitizen": "^3.0.7",
+    "docz-core": "^1.0.4",
+    "@types/node": "^11.13.5",
+    "commitizen": "^3.1.0",
     "cz-conventional-changelog": "2.1.0",
-    "docz-core": "^1.0.0-rc.3",
     "husky": "^1.3.1",
     "lint-staged": "^8.1.5",
     "npm-run-all": "^4.1.5",
-    "prettier": "^1.16.4",
-    "rollup": "^1.7.0",
+    "prettier": "^1.17.0",
+    "rollup": "^1.10.1",
     "rollup-plugin-typescript2": "^0.20.1",
     "standard-version": "^5.0.2",
-    "tslint": "^5.14.0",
+    "tslint": "^5.16.0",
     "tslint-config-prettier": "^1.18.0",
-    "typescript": "^3.3.4000"
+    "typescript": "^3.4.4"
   }
 }
