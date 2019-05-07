@@ -13,7 +13,12 @@ function fromDir(
     return
   }
 
+  if (startPath.startsWith('.')) {
+    return
+  }
+
   const files = fs.readdirSync(startPath)
+
   for (const file of files) {
     const filename = path.join(startPath, file)
     const stat = fs.lstatSync(filename)
@@ -32,7 +37,9 @@ function getComponentsModules(startPath: string): string[] {
 
   const componentPaths = fs
     .readdirSync(startPath)
+    .filter(f => !f.startsWith('.'))
     .map(f => path.join(startPath, f))
+
   return componentPaths
 }
 
@@ -59,8 +66,6 @@ export const stencil = (opts?: DoczStencilPluginOptions) => {
           if (err) throw new Error(err)
 
           const filename = path.parse(filenameWithPath).base
-
-          console.log(filename)
 
           if (filename === 'playground.md') {
             playgroundContent = fs
