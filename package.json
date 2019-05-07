@@ -1,6 +1,6 @@
 {
   "name": "docz-plugin-stencil",
-  "version": "0.4.5",
+  "version": "0.4.6",
   "description": "Integrates Stencil auto generated markdown files into Docz with ease",
   "license": "MIT",
   "repository": {

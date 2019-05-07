@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.4.6](https://github.com/DanielNetzer/docz-plugin-stencil/compare/v0.4.5...v0.4.6) (2019-05-07)
+
+
+### Bug Fixes
+
+* **hidden folders:** hidden system folders starting with '.' ignored ([a38df93](https://github.com/DanielNetzer/docz-plugin-stencil/commit/a38df93)), closes [#2](https://github.com/DanielNetzer/docz-plugin-stencil/issues/2)
+
+
+
 ## [0.4.5](https://github.com/DanielNetzer/docz-plugin-stencil/compare/v0.4.4...v0.4.5) (2019-04-19)
 
 
