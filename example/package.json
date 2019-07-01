@@ -1,0 +1,36 @@
+{
+  "name": "example",
+  "version": "0.0.1",
+  "description": "Stencil Component Starter",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "es2015": "dist/esm/index.mjs",
+  "es2017": "dist/esm/index.mjs",
+  "types": "dist/types/index.d.ts",
+  "collection": "dist/collection/collection-manifest.json",
+  "collection:main": "dist/collection/index.js",
+  "unpkg": "dist/example/example.js",
+  "files": [
+    "dist/",
+    "loader/"
+  ],
+  "scripts": {
+    "docz:dev": "wait-on http://localhost:3333/ && docz dev",
+    "docz:build": "docz build",
+    "stencil:dev": "stencil build --watch --serve --docs",
+    "stencil:build": "stencil build --docs",
+    "build": "npm run stencil:build && npm run docz:build",
+    "start": "concurrently \"npm run stencil:dev\" \"npm run docz:dev\"",
+    "test": "stencil test --spec --e2e",
+    "test.watch": "stencil test --spec --e2e --watchAll"
+  },
+  "devDependencies": {
+    "@stencil/core": "^1.0.7",
+    "concurrently": "^4.1.1",
+    "docz": "^1.2.0",
+    "docz-plugin-stencil": "^0.4.6",
+    "docz-theme-default": "^1.2.0",
+    "wait-on": "^3.2.0"
+  },
+  "license": "MIT"
+}

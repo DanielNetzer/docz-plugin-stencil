@@ -12,7 +12,7 @@ Docz plugin to integrate easily with [stenciljs](https://stenciljs.com)
 $ yarn add docz-plugin-stencil wait-on concurrently --dev
 ```
 
-2. add the plugin on your `doczrc.js`:
+2. add the plugin on your `doczrc.js` (if you don't have a `doczrc.js` file, create one at the root of the stencil project):
 
 ```js
 // doczrc.js
