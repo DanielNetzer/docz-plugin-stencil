@@ -89,8 +89,6 @@ export const stencil = (opts?: DoczStencilPluginOptions) => {
           doczPGContent = [
             '',
             "import { Playground } from 'docz';",
-            "import { defineCustomElements } from './loader';",
-            'defineCustomElements(window);',
             '',
             '<Playground>',
             ...playgroundContent,
@@ -110,6 +108,11 @@ export const stencil = (opts?: DoczStencilPluginOptions) => {
         mdContent.splice(playGrndInsertionIndex + 1, 0, ...doczPGContent)
 
         const doczMdxContent = mdContent.join('\n')
+
+        // check that outputPath exists
+        if (!fs.existsSync(options.outputPath)) {
+          fs.mkdirSync(options.outputPath)
+        }
 
         // create new file with playground content, name it after the component name
         fs.writeFileSync(`${options.outputPath}/${cmpName}.mdx`, doczMdxContent)
