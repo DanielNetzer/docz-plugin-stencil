@@ -1,1 +1,0 @@
-<my-component first="daniel" last="netzer"></my-component>
