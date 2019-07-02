@@ -17,7 +17,7 @@
   "scripts": {
     "docz:dev": "wait-on http://localhost:3333/ && docz dev",
     "docz:build": "docz build",
-    "stencil:dev": "stencil build --watch --serve --docs",
+    "stencil:dev": "stencil build --dev --watch --serve --docs",
     "stencil:build": "stencil build --docs",
     "build": "npm run stencil:build && npm run docz:build",
     "start": "concurrently \"npm run stencil:dev\" \"npm run docz:dev\"",

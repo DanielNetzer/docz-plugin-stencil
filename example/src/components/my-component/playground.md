@@ -1,0 +1,1 @@
+<my-component first="daniel" last="netzer" middle="thanos"></my-component>

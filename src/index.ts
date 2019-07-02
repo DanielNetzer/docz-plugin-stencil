@@ -85,7 +85,7 @@ export const stencil = (opts?: DoczStencilPluginOptions) => {
         const doczMdHeader = ['', '---', `name: ${cmpName}`, '---', '']
         let doczPGContent: string[] = []
 
-        if (playgroundContent) {
+        if (playgroundContent && playgroundContent.length > 0) {
           doczPGContent = [
             '',
             "import { Playground } from 'docz';",
